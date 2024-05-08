@@ -13,10 +13,8 @@ import shutil
 from sklearn.metrics import confusion_matrix
 import matplotlib.pyplot as plt
 from sklearn.utils.multiclass import unique_labels
-import seaborn as sns  # For a nicer graphical representation
+import seaborn as sns
 import numpy as np
-import time
-import pickle
 
 class ConditionalImputer(TransformerMixin):
     """
