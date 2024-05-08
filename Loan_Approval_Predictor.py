@@ -12,7 +12,6 @@ import os
 import shutil
 from sklearn.metrics import confusion_matrix
 import matplotlib.pyplot as plt
-from sklearn.utils.multiclass import unique_labels
 import seaborn as sns
 import numpy as np
 
@@ -45,6 +44,20 @@ class ConditionalImputer(TransformerMixin):
 
 # Class to save feature names and now also the target column name
 class FeatureNameSaver(BaseEstimator, TransformerMixin):
+    """
+    A transformer for saving feature names and optionally the target column name. 
+    This class is useful for retaining feature names after transformations 
+    that might lose these metadata (e.g., during scaling or encoding).
+
+    Parameters:
+    - target_column (str, optional): The name of the target column. 
+      This is useful for distinguishing the target from the features in a dataset.
+
+    Attributes:
+    - feature_names (list): List of feature names.
+    - target_column (str): Name of the target column if provided.
+    """
+
     def __init__(self, target_column=None):
         self.feature_names = None
         self.target_column = target_column
@@ -514,6 +527,18 @@ def load_model_and_get_columns(file_path):
     return None, None, None, None
 
 def use_trained_model_to_predict(choice):
+    """
+    Uses a pre-trained model to make predictions based on user input or a dataset. 
+    The model and mappings are loaded from a specified directory, and predictions are output.
+
+    Parameters:
+    - choice (str): Determines the mode of prediction. '2' for individual prediction 
+      from user input and '3' for batch predictions from a dataset.
+
+    Side Effects:
+    - Prints the prediction result directly to console if choice is '2'.
+    - Saves the predictions to a CSV file if choice is '3'.
+    """
     chosen_directory = choose_directory_to_predict()
 
     model_path = os.path.join(chosen_directory, 'model_pipeline.pkl')
