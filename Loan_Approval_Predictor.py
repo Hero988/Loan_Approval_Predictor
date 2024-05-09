@@ -164,7 +164,7 @@ def split_and_save_data(data, file_path_train_test, file_path_unseen):
     train_test_data.to_csv(file_path_train_test, index=False)
     unseen_data.to_csv(file_path_unseen, index=False)
 
-def split_data_train_and_test_new(data, target_column):
+def split_data_train_and_test(data, target_column):
     """
     Split data into training and testing datasets.
 
@@ -395,7 +395,7 @@ def train_and_evaluate_model():
     model_pipeline = setup_model_pipeline(numerical_cols, target_column)
 
     # Split and train
-    X_train, X_test, y_train, y_test = split_data_train_and_test_new(train_test_data_copy, target_column)
+    X_train, X_test, y_train, y_test = split_data_train_and_test(train_test_data_copy, target_column)
     model_pipeline.fit(X_train, y_train)
 
     # Predictions and Target convert back to labels
