@@ -485,6 +485,17 @@ def choose_directory_to_predict():
             print("Please enter a valid integer.")
 
 def get_user_input(feature_names, mappings):
+    """
+    Collects user inputs for specified features and applies any necessary mappings.
+    
+    Parameters:
+    - feature_names (list): A list of strings representing the names of the features for which input is required.
+    - mappings (dict): A dictionary where each key is a feature name, and the value is another dictionary mapping
+                       user input strings to their corresponding processed values.
+
+    Returns:
+    - dict: A dictionary containing the feature names as keys and the processed user inputs as values.
+    """
     user_data = {}
     for feature in feature_names:
         # Ask for input
@@ -503,6 +514,19 @@ def get_user_input(feature_names, mappings):
     return user_data
 
 def load_model_and_get_columns(file_path):
+    """
+    Loads a saved model pipeline and mappings from a file, extracting feature names and the target column.
+
+    Parameters:
+    - file_path (str): The file path to the serialized model pipeline and mappings.
+
+    Returns:
+    - tuple: Contains the loaded model pipeline, a list of feature names, the mappings dictionary, and the name
+             of the target column. If the process fails at any point, all return values will be None.
+
+    Raises:
+    - Exception: Outputs an error message if the model pipeline cannot be loaded or processed.
+    """
     try:
         # Load the model pipeline and mappings from the file
         with open(file_path, 'rb') as f:
@@ -598,5 +622,4 @@ def main_menu():
         else:
             print("Invalid choice. Please enter 1, 2, 3, or 4.")
 
-if __name__ == '__main__':
-    main_menu()
+main_menu()
