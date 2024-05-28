@@ -269,7 +269,7 @@ def plot_feature_importance(importances, feature_names):
 
 def user_choose_dataset():
     """
-    Finds all files in the current directory that contain '_dataset' in their names,
+    Finds all .csv files in the current directory,
     Displays a list of dataset files and allows the user to choose one.
 
     Returns:
@@ -278,8 +278,8 @@ def user_choose_dataset():
     directory = os.getcwd()  # Get the current working directory
     dataset_files = []
     for filename in os.listdir(directory):
-        if "_dataset" in filename:  # Change to check for '_dataset' anywhere in the filename:
-            full_path = os.path.join(directory, filename)
+        full_path = os.path.join(directory, filename)
+        if filename.endswith(".csv") and os.path.isfile(full_path):  # Check for files ending with '.csv' and ensure it is a file
             dataset_files.append(full_path)
 
     if not dataset_files:
@@ -299,7 +299,7 @@ def user_choose_dataset():
                 print(f"Invalid choice. Please enter a number between 1 and {len(dataset_files)}.")
         except ValueError:
             print("Please enter a valid integer.")
-
+            
 def user_choose_target_column(data):
     """
     Displays binary columns (columns with exactly two unique values) of the DataFrame 
@@ -446,7 +446,7 @@ def train_and_evaluate_model():
         os.makedirs(save_directory)
     
     # Save all files except the specified ones
-    exclude_files = ['Loan_Approval_Predictor.py', f'{data_main_filename}', 'LoanApprovalPrediction_dataset.csv', 'loan_approval_dataset.csv']
+    exclude_files = ['Loan_Approval_Predictor.py', f'{data_main_filename}', 'dataset.csv', 'loan_approval_dataset.csv']
 
     # Copy the file and move it to the save_directory
     shutil.copy(f'{data_main_filename}', save_directory)
@@ -582,17 +582,24 @@ def use_trained_model_to_predict(choice):
         prediction_original = [target_column_mapping[pred] for pred in prediction][0]  # Access the first item
         print("Predicted Output:", prediction_original)
     elif choice == '3':
-        data_path = os.path.join(chosen_directory, 'unseen_data_no_target.csv')
+        data_path_no_target = os.path.join(chosen_directory, 'unseen_data_no_target.csv')
+        data_path_target =  os.path.join(chosen_directory, 'unseen_data_target.csv')
         # Load the dataset
-        data = pd.read_csv(data_path)
+        data_no_target = pd.read_csv(data_path_no_target)
 
-        predictions = model.predict(data)
+        data_target = pd.read_csv(data_path_target)
+
+        targets = data_target[target_column]
+
+        predictions = model.predict(data_no_target)
         target_column_mapping = mappings.get(target_column, {})
         predictions_original = [target_column_mapping[pred] for pred in predictions]
 
-        data['Predictions'] = predictions_original
+        data_no_target['Predictions'] = predictions_original
 
-        data_with_predictions = convert_numeric_to_categorical(data, mappings)
+        data_no_target[target_column] = targets
+
+        data_with_predictions = convert_numeric_to_categorical(data_no_target, mappings)
 
         # Combine the directory path and filename
         file_path = os.path.join(chosen_directory, 'unseen_data_with_predictions.csv')

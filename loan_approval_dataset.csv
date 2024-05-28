@@ -1,4 +1,4 @@
-loan_id,no_of_dependents,education,self_employed,income_annum,loan_amount,loan_term,cibil_score,residential_assets_value,commercial_assets_value,luxury_assets_value,bank_asset_value,loan_status
+loan_id, no_of_dependents, education, self_employed, income_annum, loan_amount, loan_term, cibil_score, residential_assets_value, commercial_assets_value, luxury_assets_value, bank_asset_value, loan_status
 1,2, Graduate, No,9600000,29900000,12,778,2400000,17600000,22700000,8000000, Approved
 2,0, Not Graduate, Yes,4100000,12200000,8,417,2700000,2200000,8800000,3300000, Rejected
 3,3, Graduate, No,9100000,29700000,20,506,7100000,4500000,33300000,12800000, Rejected
